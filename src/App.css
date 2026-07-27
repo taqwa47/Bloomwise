@@ -76,3 +76,24 @@
   .test-grid{ grid-template-columns:1fr }
   .nav-links{ display:none }
 }
+
+/* Login modal styles */
+.modal-overlay{ position:fixed; inset:0; background:rgba(10,12,10,0.5); display:flex; align-items:center; justify-content:center; z-index:60 }
+.login-modal{ width:520px; max-width:92%; background:#fff; border-radius:20px; overflow:hidden; box-shadow:0 30px 80px rgba(10,12,10,0.6); position:relative }
+.login-header{ background:var(--primary); color:#fff; padding:34px; text-align:center; position:relative }
+.login-header .logo-circle{ width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,0.12);display:inline-flex;align-items:center;justify-content:center;margin:0 auto 8px }
+.login-header .brand-title{ font-weight:700; opacity:0.95 }
+.login-header h2{ margin:12px 0 6px; font-family:var(--font-heading); font-size:28px }
+.login-header .muted{ opacity:0.9 }
+.modal-close{ position:absolute; right:16px; top:14px; background:transparent;border:none;color:#fff;font-size:18px;cursor:pointer }
+.login-body{ padding:28px 34px 40px }
+.login-body label{ display:block; font-weight:600; color:var(--primary-dark); margin-top:12px; text-align:left }
+.login-body input{ width:100%; padding:16px 18px; border-radius:28px; border:1px solid var(--border); margin-top:8px; box-sizing:border-box }
+.forgot{ text-align:right; color:var(--primary); margin-top:8px; cursor:pointer }
+.sign-button{ width:100%; background:var(--primary); color:#fff; padding:14px; border-radius:14px; border:none; margin-top:18px; box-shadow:0 8px 30px rgba(31,45,36,0.18); cursor:pointer }
+.or-sep{ text-align:center; margin:14px 0; color:#9aa69d }
+.google-button{ width:100%; padding:12px; border-radius:12px; border:1px solid var(--border); background:#fff; cursor:pointer }
+.signup-line{ text-align:center; margin-top:12px; color:var(--muted) }
+.signup-line .linkish{ color:var(--primary); cursor:pointer; font-weight:600 }
+
+@media (max-width:420px){ .login-modal{ width:96% } }

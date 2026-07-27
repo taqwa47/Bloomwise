@@ -1,9 +1,11 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ChevronDown } from 'lucide-react'
+import { useState } from 'react'
+import LoginModal from './LoginModal'
 
 const Navbar = () => {
   const nav = useNavigate()
+  const [openLogin, setOpenLogin] = useState(false)
 
   const scrollTo = (id) => {
     const el = document.getElementById(id)
@@ -27,9 +29,11 @@ const Navbar = () => {
 
         <div className="nav-actions">
           <button className="try-free" onClick={() => nav('/diagnosis')}>Try Free</button>
-          <button className="login" onClick={() => nav('/login')}>Login</button>
+          <button className="login" onClick={() => setOpenLogin(true)}>Login</button>
         </div>
       </div>
+
+      {openLogin && <LoginModal onClose={() => setOpenLogin(false)} />}
     </header>
   )
 }
