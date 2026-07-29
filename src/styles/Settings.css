@@ -1,0 +1,224 @@
+/* Settings Page Styles */
+
+.settings-main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.settings-header {
+  margin-bottom: 8px;
+}
+
+.settings-header h1 {
+  font-family: var(--font-heading, 'Playfair Display', serif);
+  font-size: 32px;
+  color: #11281b;
+  margin: 0;
+}
+
+.settings-section {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.settings-section h2 {
+  font-family: var(--font-heading, 'Playfair Display', serif);
+  font-size: 24px;
+  color: #11281b;
+  margin: 0;
+}
+
+.settings-form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.settings-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.settings-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.settings-input-group label {
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-size: 14px;
+  font-weight: 600;
+  color: #5c6661;
+}
+
+.settings-input {
+  background: #fafbfb;
+  border: 1px solid #e2e8e4;
+  border-radius: 16px;
+  padding: 16px;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-size: 15px;
+  color: #11281b;
+  outline: none;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.settings-input:focus {
+  border-color: #315e47;
+  background: #ffffff;
+}
+
+.settings-input.error {
+  border-color: #c93434;
+}
+
+.settings-error-msg {
+  color: #c93434;
+  font-size: 13px;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+}
+
+/* Logo Section */
+.settings-logo-area {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.settings-logo-preview {
+  width: 96px;
+  height: 96px;
+  background: #315e47;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.settings-logo-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.settings-logo-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.settings-upload-btn {
+  background: #ffffff;
+  border: 1px solid #315e47;
+  color: #315e47;
+  padding: 12px 24px;
+  border-radius: 100px;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.settings-upload-btn:hover {
+  background: #f4f9f6;
+}
+
+.settings-remove-btn {
+  background: transparent;
+  border: none;
+  color: #c93434;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-size: 13px;
+  cursor: pointer;
+  text-align: left;
+  padding: 0 4px;
+}
+
+.settings-remove-btn:hover {
+  text-decoration: underline;
+}
+
+/* Footer Actions */
+.settings-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.settings-reset-btn {
+  background: transparent;
+  border: none;
+  color: #5c6661;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 16px 24px;
+}
+
+.settings-reset-btn:hover {
+  color: #11281b;
+}
+
+.settings-save-btn {
+  background: #315e47;
+  color: #ffffff;
+  border: none;
+  padding: 18px 48px;
+  border-radius: 16px;
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex: 1; /* Match screenshot which makes it full width relative to its container, wait screenshot shows a huge full width button */
+}
+/* Wait, the screenshot shows the Save Changes button is almost full width of the main content area */
+.settings-save-btn-container {
+  width: 100%;
+}
+.settings-save-btn-container .settings-save-btn {
+  width: 100%;
+}
+
+.settings-save-btn:hover:not(:disabled) {
+  background: #234534;
+}
+
+.settings-save-btn:disabled {
+  background: #9aa69d;
+  cursor: not-allowed;
+}
+
+.unsaved-warning {
+  font-family: var(--font-sans, 'Poppins', sans-serif);
+  font-size: 14px;
+  color: #d18a45;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .settings-form-row {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}

@@ -1,0 +1,165 @@
+/* Orders Page Styles */
+
+.orders-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.orders-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+  flex: 1;
+}
+
+.orders-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.orders-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.order-tab {
+  background: transparent;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 24px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: #5c6661;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.order-tab:hover {
+  color: #11281b;
+}
+
+.order-tab.active {
+  background: #315e47;
+  color: #fff;
+}
+
+.tab-count {
+  font-weight: 500;
+  opacity: 0.7;
+}
+.order-tab.active .tab-count {
+  color: rgba(255,255,255,0.7);
+}
+
+.orders-search-wrapper {
+  position: relative;
+  width: 240px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9aa69d;
+}
+
+.orders-search {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 16px 10px 42px;
+  border-radius: 24px;
+  border: 1px solid #f0efea;
+  background: #fbfbf9;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: #11281b;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.orders-search:focus {
+  border-color: #315e47;
+  background: #fff;
+}
+
+.orders-table-wrapper {
+  overflow-x: auto;
+}
+
+.orders-table {
+  width: 100%;
+}
+
+.orders-table th {
+  padding: 16px 20px;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.orders-table td {
+  padding: 20px;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.fw-bold {
+  font-family: var(--font-heading, 'Playfair Display', serif);
+  font-weight: 700;
+  font-size: 16px;
+  color: #11281b;
+}
+
+.customer-name {
+  font-weight: 500;
+  color: #11281b;
+}
+
+.item-cell {
+  color: #5c6661;
+}
+
+.amount-cell {
+  font-size: 15px;
+}
+
+.date-cell {
+  color: #9aa69d;
+  font-size: 13px;
+}
+
+.status-pill.cancelled {
+  background: #fde8e8;
+  color: #c93434;
+}
+
+.view-btn {
+  background: transparent;
+  border: 1px solid #e2e1d7;
+  color: #315e47;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.view-btn:hover {
+  background: #f4f7f5;
+  border-color: #315e47;
+}
+
+.empty-state {
+  text-align: center;
+  color: #9aa69d;
+  padding: 64px 0 !important;
+}

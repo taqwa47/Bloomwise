@@ -17,7 +17,7 @@ const Navbar = () => {
       <div className="nav-inner">
         <div className="brand" onClick={() => nav('/')} style={{ cursor: 'pointer' }}>
           <div className="logo-container">
-            <svg width="34" height="34" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="42" height="42" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="18" cy="18" r="18" fill="#1C3A27" />
               <path d="M24 12C20 12 16.5 15.5 15.5 20.5C15 22.5 15.5 24 17 24.5C18 24.8 19.5 24.5 21 23C23.5 20.5 25 16 25 13.5C25 12.5 24.5 12 24 12Z" fill="#FAF9F5" />
               <path d="M15.5 20.5C14.5 21.5 12 23 11 23.5" stroke="#FAF9F5" strokeWidth="1.5" strokeLinecap="round" />

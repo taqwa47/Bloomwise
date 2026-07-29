@@ -1,0 +1,394 @@
+.occasions-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  font-family: var(--font-body);
+  color: #2c3e35;
+}
+
+.occasions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.occasions-title {
+  font-family: var(--font-heading);
+  font-size: 32px;
+  color: #1a2f24;
+  margin: 0;
+}
+
+.occasions-layout {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+/* Calendar Section */
+.calendar-section {
+  flex: 1;
+  background: #fff;
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.calendar-month-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a2f24;
+  margin: 0;
+}
+
+.calendar-nav {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.calendar-nav button {
+  background: #f8faf9;
+  border: 1px solid #e2e8e4;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #5c6661;
+  transition: all 0.2s;
+}
+
+.calendar-nav button:hover {
+  background: #eef3ef;
+  color: #315e47;
+  border-color: #315e47;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.calendar-day-header {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: #88928d;
+  padding-bottom: 12px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  border: 1px solid #e2e8e4;
+  border-radius: 12px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #fff;
+  position: relative;
+  min-height: 80px;
+}
+
+.calendar-day:hover {
+  border-color: #315e47;
+  box-shadow: 0 4px 12px rgba(49, 94, 71, 0.1);
+}
+
+.calendar-day.empty {
+  background: transparent;
+  border-color: transparent;
+  cursor: default;
+}
+
+.calendar-day.empty:hover {
+  box-shadow: none;
+}
+
+.calendar-day.today {
+  background: #f0fdf4;
+  border-color: #315e47;
+}
+
+.day-number {
+  font-size: 14px;
+  font-weight: 600;
+  color: #5c6661;
+  margin-bottom: 4px;
+}
+
+.calendar-day.today .day-number {
+  color: #315e47;
+}
+
+.day-indicators {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+  max-height: calc(100% - 24px);
+}
+
+.day-indicator {
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+/* Upcoming Occasions List */
+.upcoming-section {
+  width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.upcoming-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a2f24;
+  margin: 0 0 16px;
+}
+
+.occasion-card {
+  background: #fff;
+  border: 1px solid #e2e8e4;
+  border-radius: 16px;
+  padding: 20px;
+  transition: all 0.2s;
+}
+
+.occasion-card:hover {
+  border-color: #315e47;
+  box-shadow: 0 4px 12px rgba(49, 94, 71, 0.05);
+}
+
+.occasion-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.occasion-card-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 4px;
+  color: #1a2f24;
+}
+
+.occasion-card-subtitle {
+  font-size: 13px;
+  color: #88928d;
+  margin: 0;
+}
+
+.occasion-card-date {
+  font-size: 14px;
+  font-weight: 600;
+  color: #315e47;
+  background: #eef3ef;
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
+.occasion-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 13px;
+  color: #5c6661;
+  margin-bottom: 16px;
+}
+
+.occasion-card-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-choose-gift {
+  width: 100%;
+  padding: 10px;
+  background: #f8faf9;
+  border: 1px solid #e2e8e4;
+  border-radius: 12px;
+  color: #315e47;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-choose-gift:hover {
+  background: #315e47;
+  color: #fff;
+  border-color: #315e47;
+}
+
+/* Modals */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  padding: 24px;
+  border-bottom: 1px solid #e2e8e4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a2f24;
+  margin: 0;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: #88928d;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  transition: color 0.2s;
+}
+
+.modal-close:hover {
+  color: #1a2f24;
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.modal-footer {
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  padding: 24px;
+  border-top: 1px solid #e2e8e4;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  z-index: 10;
+}
+
+/* Form Styles inside Modal */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Reminders Section */
+.reminders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.reminder-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f8faf9;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #e2e8e4;
+}
+
+/* Empty State */
+.empty-occasions {
+  text-align: center;
+  padding: 60px 20px;
+  background: #f8faf9;
+  border-radius: 24px;
+  border: 1px dashed #cbd5e1;
+}
+
+/* Colors for occasion types */
+.bg-birthday { background-color: #fbcfe8; color: #831843; }
+.bg-anniversary { background-color: #fecaca; color: #7f1d1d; }
+.bg-wedding { background-color: #fef08a; color: #713f12; }
+.bg-graduation { background-color: #bbf7d0; color: #14532d; }
+.bg-mothers-day { background-color: #fed7aa; color: #7c2d12; }
+.bg-custom { background-color: #e9d5ff; color: #4c1d95; }
+.bg-default { background-color: #e2e8e4; color: #1a2f24; }
+
+/* Responsive */
+@media (max-width: 1000px) {
+  .occasions-layout {
+    flex-direction: column;
+  }
+  .upcoming-section {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .calendar-day {
+    min-height: 60px;
+    padding: 4px;
+  }
+  .day-indicator {
+    font-size: 9px;
+    padding: 1px 4px;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}

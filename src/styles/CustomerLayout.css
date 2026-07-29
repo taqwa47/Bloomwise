@@ -1,0 +1,298 @@
+/* Customer Portal Layout Styles */
+
+.customer-layout {
+  min-height: 100vh;
+  background-color: #faf9f5;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.customer-header {
+  background: #ffffff;
+  border-bottom: 1px solid rgba(230, 229, 223, 0.8);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+}
+
+.customer-header-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+.customer-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: #11281b;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  background: #315e47;
+  color: #ffffff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-text {
+  font-family: var(--font-heading, serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: #11281b;
+}
+
+.customer-desktop-nav {
+  display: flex;
+  gap: 32px;
+}
+
+.desktop-nav-item {
+  text-decoration: none;
+  color: #5c6661;
+  font-family: var(--font-sans, sans-serif);
+  font-weight: 600;
+  font-size: 14px;
+  transition: color 0.2s;
+  padding: 8px 0;
+  position: relative;
+}
+
+.desktop-nav-item:hover {
+  color: #11281b;
+}
+
+.desktop-nav-item.active {
+  color: #315e47;
+}
+
+.desktop-nav-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #315e47;
+  border-radius: 2px;
+}
+
+.customer-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.action-icon-btn {
+  position: relative;
+  color: #5c6661;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.action-icon-btn:hover {
+  color: #315e47;
+}
+
+.action-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: #c93434;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #eef3ef;
+  color: #315e47;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-family: var(--font-sans, sans-serif);
+  text-decoration: none;
+  border: 1px solid #d4e0d8;
+}
+
+.profile-avatar.large {
+  width: 48px;
+  height: 48px;
+  font-size: 20px;
+}
+
+/* Main Content Area */
+.customer-main-content {
+  flex: 1;
+  padding: 32px 24px;
+}
+
+.customer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Mobile Sidebar */
+.mobile-nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(17, 40, 27, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-nav-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-nav-sidebar {
+  position: absolute;
+  top: 0;
+  left: -300px;
+  width: 280px;
+  height: 100%;
+  background: #ffffff;
+  box-shadow: 4px 0 24px rgba(0,0,0,0.1);
+  transition: left 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-nav-overlay.open .mobile-nav-sidebar {
+  left: 0;
+}
+
+.mobile-nav-header {
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid #f2f1eb;
+}
+
+.mobile-nav-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-name {
+  font-weight: 600;
+  color: #11281b;
+  font-size: 15px;
+}
+
+.profile-email {
+  font-size: 13px;
+  color: #5c6661;
+}
+
+.close-menu-btn {
+  background: none;
+  border: none;
+  color: #88928d;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.mobile-nav-content {
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.mobile-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  color: #5c6661;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 15px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.mobile-nav-item.active {
+  background: #eef3ef;
+  color: #315e47;
+  font-weight: 600;
+}
+
+.mobile-nav-divider {
+  height: 1px;
+  background: #f2f1eb;
+  margin: 8px 0;
+}
+
+@media (max-width: 992px) {
+  .customer-desktop-nav {
+    display: none;
+  }
+  .mobile-menu-btn {
+    display: block;
+  }
+}
+  
+/* Customer Home Hero */  
+.customer-hero-wrapper { display: flex; align-items: stretch; min-height: 340px; }  
+.customer-hero-content { flex: 1 1 55%; padding: 56px 48px; display: flex; flex-direction: column; justify-content: center; z-index: 2; background: linear-gradient(90deg, rgba(253,251,247,1) 50%, rgba(253,251,247,0.8) 75%, rgba(253,251,247,0) 100%); }  
+.customer-hero-image-col { flex: 1 1 45%; position: absolute; right: 0; top: 0; bottom: 0; width: 50%; z-index: 1; }  
+.customer-hero-image { width: 100%; height: 100%; object-fit: cover; object-position: center; }  
+.customer-hero-stats { position: relative; z-index: 2; padding: 0 48px 32px 48px; }  
+.customer-hero-stats-inner { display: flex; gap: 16px; background: #fff; border-radius: 20px; padding: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.04); border: 1px solid rgba(255,255,255,0.8); }  
+@media (max-width: 992px) { .customer-hero-wrapper { flex-direction: column; } .customer-hero-content { background: rgba(253,251,247,0.9); padding: 40px 24px; text-align: center; } .customer-hero-image-col { position: relative; width: 100%; height: 300px; } .customer-hero-stats { padding: 0 24px 24px 24px; } .customer-hero-stats-inner { flex-direction: column; } .customer-hero-actions { justify-content: center; } .stats-divider { display: none; } } 
