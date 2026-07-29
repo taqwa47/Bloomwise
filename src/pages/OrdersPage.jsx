@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Search } from 'lucide-react'
+import { useOrders } from '../hooks/useOrders'
+import OrderDetailsModal from '../components/orders/OrderDetailsModal'
 import '../styles/Orders.css'
 
-const initialMockOrders = [
-  { id: "#1042", customerName: "Sarah Johnson", item: "Red Rose Bouquet", amount: 85, status: "Pending", date: "Today 10:30" },
-  { id: "#1039", customerName: "Lisa Davis", item: "Sunflower Bundle", amount: 45, status: "Pending", date: "Yesterday" },
-  { id: "#1036", customerName: "Omar Khalil", item: "Orchid Gift Set", amount: 130, status: "Pending", date: "Jun 23" },
-  { id: "#1033", customerName: "Emma Wilson", item: "Lily Arrangement", amount: 120, status: "Completed", date: "Jun 22" },
-  { id: "#1030", customerName: "James Smith", item: "Tulip Basket", amount: 65, status: "Completed", date: "Jun 20" },
-  { id: "#1028", customerName: "Sophia Brown", item: "Bridal Bouquet", amount: 250, status: "Completed", date: "Jun 18" },
-  { id: "#1027", customerName: "Michael Chen", item: "Potted Fern", amount: 35, status: "Cancelled", date: "Jun 17" },
-  { id: "#1022", customerName: "Olivia Davis", item: "Custom Anniversary", amount: 180, status: "Cancelled", date: "Jun 14" }
-]
+// Mock orders moved to useOrders hook
 
 const getInitialColor = (name) => {
   const char = name.charAt(0).toUpperCase()
@@ -27,19 +20,10 @@ const getInitialColor = (name) => {
 }
 
 const OrdersPage = () => {
-  const [orders, setOrders] = useState([])
+  const { orders, updateOrderStatus } = useOrders()
   const [activeTab, setActiveTab] = useState('Pending')
   const [searchQuery, setSearchQuery] = useState('')
-
-  useEffect(() => {
-    const storedOrders = localStorage.getItem('bloomwise_orders')
-    if (storedOrders) {
-      setOrders(JSON.parse(storedOrders))
-    } else {
-      setOrders(initialMockOrders)
-      localStorage.setItem('bloomwise_orders', JSON.stringify(initialMockOrders))
-    }
-  }, [])
+  const [selectedOrder, setSelectedOrder] = useState(null)
 
   const pendingCount = orders.filter(o => o.status === 'Pending').length
   const completedCount = orders.filter(o => o.status === 'Completed').length
@@ -136,7 +120,7 @@ const OrdersPage = () => {
                     <td><span className={`status-pill ${order.status.toLowerCase()}`}>{order.status}</span></td>
                     <td className="date-cell">{order.date}</td>
                     <td>
-                      <button className="view-btn">View</button>
+                      <button className="view-btn" onClick={() => setSelectedOrder(order)}>View</button>
                     </td>
                   </tr>
                 ))
@@ -149,6 +133,18 @@ const OrdersPage = () => {
           </table>
         </div>
       </div>
+      
+      {selectedOrder && (
+        <OrderDetailsModal 
+          isOpen={true} 
+          onClose={() => setSelectedOrder(null)} 
+          order={selectedOrder}
+          onUpdateStatus={(status) => {
+            updateOrderStatus(selectedOrder.id, status)
+            setSelectedOrder({...selectedOrder, status})
+          }}
+        />
+      )}
     </main>
   )
 }

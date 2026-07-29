@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { X, Calendar, MapPin, Clock, Edit2, Trash2 } from 'lucide-react';
 import { deductInventoryForEvent, restoreInventoryForEvent } from '../../data/mockEvents';
+import DeleteEventDialog from './DeleteEventDialog';
 
 const STATUSES = ['Pending', 'Confirmed', 'Preparing', 'Ready', 'Completed', 'Cancelled'];
 
@@ -12,15 +13,14 @@ const EventDetailsModal = ({ isOpen, onClose, event, onEdit, onDelete, onChangeS
 
   const handleStatusChange = (e) => {
     const newStatus = e.target.value;
-    const oldStatus = event.status;
     
-    // Inventory logic
+    // Inventory logic based on inventoryReserved flag
     const requiresDeduction = ['Confirmed', 'Preparing'].includes(newStatus);
-    const wasDeducted = ['Confirmed', 'Preparing', 'Ready', 'Completed'].includes(oldStatus);
-    const requiresRestore = newStatus === 'Cancelled' && wasDeducted;
+    const requiresRestore = ['Cancelled'].includes(newStatus);
 
-    // Warning before deducting if insufficient
-    if (requiresDeduction && !wasDeducted) {
+    let updatedEvent = { ...event, status: newStatus };
+
+    if (requiresDeduction && !event.inventoryReserved) {
       let insufficient = false;
       event.flowers.forEach(f => {
         const invItem = inventory.find(i => i.name === f.name);
@@ -34,15 +34,17 @@ const EventDetailsModal = ({ isOpen, onClose, event, onEdit, onDelete, onChangeS
         }
       }
       deductInventoryForEvent(event.flowers);
-    } else if (requiresRestore) {
+      updatedEvent.inventoryReserved = true;
+    } else if (requiresRestore && event.inventoryReserved) {
       restoreInventoryForEvent(event.flowers);
+      updatedEvent.inventoryReserved = false;
     }
 
-    onChangeStatus(event.id, newStatus);
+    onChangeStatus(updatedEvent);
   };
 
   const handleDelete = () => {
-    if (['Confirmed', 'Preparing', 'Ready', 'Completed'].includes(event.status)) {
+    if (event.inventoryReserved) {
       restoreInventoryForEvent(event.flowers);
     }
     onDelete(event.id);
@@ -147,35 +149,11 @@ const EventDetailsModal = ({ isOpen, onClose, event, onEdit, onDelete, onChangeS
         </div>
       </div>
 
-      {showConfirmDelete && (
-        <div className="event-modal-overlay" style={{ zIndex: 3000 }}>
-          <div className="event-modal-content" style={{ padding: 24, maxWidth: 400 }}>
-            <h3 style={{ margin: '0 0 16px', color: '#11281b' }}>Delete Event?</h3>
-            <p style={{ color: '#5c6661', fontSize: 14, margin: '0 0 24px' }}>
-              Are you sure you want to delete {event.clientName}'s event? This action cannot be undone.
-              {['Confirmed', 'Preparing', 'Ready', 'Completed'].includes(event.status) && (
-                <strong style={{ display: 'block', marginTop: 8, color: '#c93434' }}>
-                  Reserved inventory for this event will be restored.
-                </strong>
-              )}
-            </p>
-            <div style={{ display: 'flex', gap: 12 }}>
-              <button 
-                onClick={() => setShowConfirmDelete(false)}
-                style={{ flex: 1, padding: 12, borderRadius: 12, border: '1px solid #e2e8e4', background: '#fff', cursor: 'pointer' }}
-              >
-                Cancel
-              </button>
-              <button 
-                onClick={handleDelete}
-                style={{ flex: 1, padding: 12, borderRadius: 12, border: 'none', background: '#c93434', color: '#fff', cursor: 'pointer', fontWeight: 600 }}
-              >
-                Yes, Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <DeleteEventDialog 
+        isOpen={showConfirmDelete} 
+        onCancel={() => setShowConfirmDelete(false)}
+        onDelete={handleDelete}
+      />
     </div>
   );
 };

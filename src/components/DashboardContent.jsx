@@ -1,20 +1,46 @@
-import React from 'react'
-import { DollarSign, ShoppingBag, Leaf, AlertTriangle, ScanLine, HelpCircle } from 'lucide-react'
-
-// Using random placeholders for the stock images based on the design
-const whiteLilyImg = "https://images.unsplash.com/photo-1596438459194-f2832812cd80?auto=format&fit=crop&q=80&w=150"
-const sunflowerImg = "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&q=80&w=150"
-
-import WeeklySalesChart from './WeeklySalesChart'
+import React, { useMemo } from 'react';
+import { DollarSign, ShoppingBag, Leaf, AlertTriangle, ScanLine, HelpCircle } from 'lucide-react';
+import WeeklySalesChart from './dashboard/WeeklySalesChart';
+import RecentOrdersCard from './dashboard/RecentOrdersCard';
+import StockAlertsCard from './dashboard/StockAlertsCard';
+import { useOrders } from '../hooks/useOrders';
+import { useInventory } from '../hooks/useInventory';
 
 const DashboardContent = () => {
+  const { orders } = useOrders();
+  const { inventory } = useInventory();
+
+  // Compute live stats
+  const pendingOrdersCount = orders.filter(o => o.status === 'Pending').length;
+  
+  const alerts = inventory.filter(item => item.quantity <= item.minStock);
+  const alertsCount = alerts.length;
+
+  const inStockCount = inventory.reduce((sum, item) => sum + item.quantity, 0);
+  const typesCount = inventory.length;
+
+  const todaysSales = useMemo(() => {
+    const todayStr = 'Today';
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+    
+    const todayOrders = orders.filter(o => {
+      if (o.status === 'Cancelled' || o.status === 'Rejected') return false;
+      if (o.timestamp && o.timestamp >= startOfToday.getTime()) return true;
+      if (o.date?.includes(todayStr)) return true;
+      return false;
+    });
+    
+    return todayOrders.reduce((sum, o) => sum + (Number(o.amount) || 0), 0);
+  }, [orders]);
+
   return (
     <main className="dashboard-main">
       <header className="dashboard-header">
         <h1 className="dashboard-title">Dashboard</h1>
         <div className="header-actions">
           <button className="action-btn">
-            <div style={{width:20, height:20, borderRadius:'50%', border:'2px solid #e2e1d7'}}></div>
+            <div style={{width: 20, height: 20, borderRadius: '50%', border: '2px solid #e2e1d7'}}></div>
           </button>
           <button className="action-btn">
             <span>🌻</span>
@@ -28,7 +54,7 @@ const DashboardContent = () => {
         </div>
         <h2 className="welcome-title">Welcome back, Sophie</h2>
         <p className="welcome-subtitle">
-          Your shop has <strong>3 pending orders</strong> and <strong>2 low stock alerts</strong> today.
+          Your shop has <strong>{pendingOrdersCount} pending orders</strong> and <strong>{alertsCount} stock alerts</strong> today.
         </p>
       </section>
 
@@ -38,9 +64,9 @@ const DashboardContent = () => {
             <div className="stat-icon"><DollarSign size={20} /></div>
             <div className="stat-badge">Live</div>
           </div>
-          <h3 className="stat-value">$1,247</h3>
+          <h3 className="stat-value">₪{todaysSales.toLocaleString()}</h3>
           <p className="stat-title">Today's Sales</p>
-          <p className="stat-subtitle" style={{color:'#6a957a'}}>+12%</p>
+          <p className="stat-subtitle" style={{color: '#6a957a'}}>Real-time</p>
         </div>
         
         <div className="stat-card">
@@ -48,9 +74,9 @@ const DashboardContent = () => {
             <div className="stat-icon"><ShoppingBag size={20} /></div>
             <div className="stat-badge">Live</div>
           </div>
-          <h3 className="stat-value">3</h3>
+          <h3 className="stat-value">{pendingOrdersCount}</h3>
           <p className="stat-title">Pending Orders</p>
-          <p className="stat-subtitle">New</p>
+          <p className="stat-subtitle">Action required</p>
         </div>
         
         <div className="stat-card">
@@ -58,19 +84,19 @@ const DashboardContent = () => {
             <div className="stat-icon"><Leaf size={20} /></div>
             <div className="stat-badge">Live</div>
           </div>
-          <h3 className="stat-value">78</h3>
+          <h3 className="stat-value">{inStockCount}</h3>
           <p className="stat-title">Flowers in Stock</p>
-          <p className="stat-subtitle">6 types</p>
+          <p className="stat-subtitle">{typesCount} types</p>
         </div>
         
         <div className="stat-card">
           <div className="stat-header">
-            <div className="stat-icon" style={{color:'#d84545', background:'#fdf5eb'}}><AlertTriangle size={20} /></div>
+            <div className="stat-icon" style={{color: alertsCount > 0 ? '#d84545' : '#16a34a', background: alertsCount > 0 ? '#fdf5eb' : '#ebfdf2'}}><AlertTriangle size={20} /></div>
             <div className="stat-badge">Live</div>
           </div>
-          <h3 className="stat-value">2</h3>
+          <h3 className="stat-value" style={{color: alertsCount > 0 ? '#d84545' : '#1a2f24'}}>{alertsCount}</h3>
           <p className="stat-title">Low Stock Alerts</p>
-          <p className="stat-subtitle">Action</p>
+          <p className="stat-subtitle">{alertsCount > 0 ? 'Needs attention' : 'All good'}</p>
         </div>
         
         <div className="stat-card">
@@ -87,92 +113,17 @@ const DashboardContent = () => {
       <WeeklySalesChart />
 
       <div className="bottom-grid">
-        <section className="section-card">
-          <div className="section-header">
-            <h3 className="section-title">Recent Orders</h3>
-            <span className="view-all">View all →</span>
-          </div>
-          
-          <table className="custom-table">
-            <thead>
-              <tr>
-                <th>Order</th>
-                <th>Customer</th>
-                <th>Item</th>
-                <th>Amount</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>#1042</td>
-                <td>
-                  <div className="customer-cell">
-                    <div className="customer-avatar" style={{background:'#2d5440'}}>S</div>
-                    Sarah Johnson
-                  </div>
-                </td>
-                <td>Red Rose Bouquet</td>
-                <td>$85</td>
-                <td><span className="status-pill pending">Pending</span></td>
-              </tr>
-              <tr>
-                <td>#1041</td>
-                <td>
-                  <div className="customer-cell">
-                    <div className="customer-avatar" style={{background:'#305d45'}}>E</div>
-                    Emma Wilson
-                  </div>
-                </td>
-                <td>Lily Arrangement</td>
-                <td>$120</td>
-                <td><span className="status-pill completed">Completed</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-
-        <section className="section-card">
-          <div className="section-header">
-            <h3 className="section-title">Stock Alerts</h3>
-            <div style={{background:'#d84545', color:'#fff', width:20, height:20, borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, fontWeight:700}}>3</div>
-          </div>
-          
-          <div className="alerts-list">
-            <div className="alert-item">
-              <img src={whiteLilyImg} alt="White Lily" className="alert-img" />
-              <div className="alert-info">
-                <div className="alert-info-top">
-                  <AlertTriangle size={14} className="alert-icon" />
-                  <span className="alert-name">White Lily</span>
-                </div>
-                <p className="alert-desc">3 left</p>
-              </div>
-              <button className="fix-btn">Fix →</button>
-            </div>
-            
-            <div className="alert-item">
-              <img src={sunflowerImg} alt="Sunflower" className="alert-img" />
-              <div className="alert-info">
-                <div className="alert-info-top">
-                  <AlertTriangle size={14} className="alert-icon" />
-                  <span className="alert-name">Sunflower</span>
-                </div>
-                <p className="alert-desc">Out of stock</p>
-              </div>
-              <button className="fix-btn">Fix →</button>
-            </div>
-          </div>
-        </section>
+        <RecentOrdersCard />
+        <StockAlertsCard />
       </div>
       
-      <div style={{position:'absolute', bottom:32, right:32}}>
-         <button className="action-btn" style={{width:48, height:48}}>
+      <div style={{position: 'absolute', bottom: 32, right: 32}}>
+         <button className="action-btn" style={{width: 48, height: 48}}>
             <HelpCircle size={24} />
          </button>
       </div>
     </main>
-  )
-}
+  );
+};
 
-export default DashboardContent
+export default DashboardContent;

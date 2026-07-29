@@ -8,7 +8,9 @@ const INITIAL_EVENTS = [
     location: 'Haifa',
     status: 'Preparing',
     budget: 800,
+    budget: 800,
     theme: 'White Roses',
+    inventoryReserved: true,
     flowers: [
       { id: 'f1', name: 'White Rose', required: 150 },
       { id: 'f2', name: 'Baby\'s Breath', required: 80 }
@@ -23,7 +25,9 @@ const INITIAL_EVENTS = [
     location: 'Tel Aviv',
     status: 'Confirmed',
     budget: 200,
+    budget: 200,
     theme: 'Pink Peony',
+    inventoryReserved: true,
     flowers: [
       { id: 'f3', name: 'Pink Peony', required: 30 }
     ]
@@ -37,7 +41,9 @@ const INITIAL_EVENTS = [
     location: 'Jerusalem',
     status: 'Pending',
     budget: 150,
+    budget: 150,
     theme: 'Mixed Colors',
+    inventoryReserved: false,
     flowers: []
   }
 ];

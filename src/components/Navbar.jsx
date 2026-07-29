@@ -1,11 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Zap } from 'lucide-react'
-import LoginModal from './LoginModal'
 
 const Navbar = () => {
   const nav = useNavigate()
-  const [openLogin, setOpenLogin] = useState(false)
 
   const scrollTo = (id) => {
     const el = document.getElementById(id)
@@ -39,11 +37,9 @@ const Navbar = () => {
             <Zap size={14} fill="currentColor" className="icon-bolt" />
             <span>Try Free</span>
           </button>
-          <button className="login-btn" onClick={() => setOpenLogin(true)}>Login</button>
+          <button className="login-btn" onClick={() => nav('/login')}>Login</button>
         </div>
       </div>
-
-      {openLogin && <LoginModal onClose={() => setOpenLogin(false)} />}
     </header>
   )
 }

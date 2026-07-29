@@ -19,7 +19,7 @@ import {
 import { useNotifications } from '../hooks/useNotifications'
 import { useSettings } from '../hooks/useSettings'
 
-const Sidebar = () => {
+const Sidebar = ({ toggleCollapse }) => {
   const { unreadCount } = useNotifications();
   const { settings } = useSettings();
   
@@ -37,7 +37,7 @@ const Sidebar = () => {
           {settings.shopName || 'BloomWise'}
         </span>
         <span className="pro-badge">Pro</span>
-        <button className="collapse-btn">
+        <button className="collapse-btn" onClick={toggleCollapse}>
           <ChevronLeft size={16} />
         </button>
       </div>
@@ -63,14 +63,14 @@ const Sidebar = () => {
           <Leaf size={18} />
           <span>Flowers</span>
         </NavLink>
-        <NavLink to="/owner/ai-diagnosis" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
+        <NavLink to="/owner/diagnosis" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
           <ScanLine size={18} />
           <span>AI Diagnosis</span>
         </NavLink>
-        <div className="nav-item">
+        <NavLink to="/owner/smart-plant-care" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
           <Activity size={18} />
-          <span>Smart Plant Health</span>
-        </div>
+          <span>Smart Plant Care</span>
+        </NavLink>
         <NavLink to="/owner/analytics" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
           <BarChart2 size={18} />
           <span>Analytics</span>

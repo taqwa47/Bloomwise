@@ -4,6 +4,7 @@ import { initEventsData, getEvents, saveEvents, checkInventoryForEvent } from '.
 import EventCard from '../components/events/EventCard';
 import EventFormModal from '../components/events/EventFormModal';
 import EventDetailsModal from '../components/events/EventDetailsModal';
+import EventFilters from '../components/events/EventFilters';
 import '../styles/Events.css';
 
 const EVENT_TYPES = ['All Events', 'Wedding', 'Birthday', 'Graduation', 'Engagement', 'Anniversary', 'Corporate Event', 'Custom Bouquet'];
@@ -15,6 +16,7 @@ const EventsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [typeFilter, setTypeFilter] = useState('All Events');
   const [statusFilter, setStatusFilter] = useState('All Statuses');
+  const [stockFilter, setStockFilter] = useState('All');
   const [sortOption, setSortOption] = useState('Nearest Event');
 
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -98,14 +100,14 @@ const EventsPage = () => {
     showToast('Event deleted.');
   };
 
-  const handleChangeStatus = (id, newStatus) => {
-    const updated = events.map(e => e.id === id ? { ...e, status: newStatus } : e);
+  const handleChangeStatus = (updatedEvent) => {
+    const updated = events.map(e => e.id === updatedEvent.id ? updatedEvent : e);
     setEvents(updated);
     saveEvents(updated);
     updateNotifications(updated);
     
-    if (selectedEvent && selectedEvent.id === id) {
-      setSelectedEvent({ ...selectedEvent, status: newStatus });
+    if (selectedEvent && selectedEvent.id === updatedEvent.id) {
+      setSelectedEvent(updatedEvent);
     }
   };
 
@@ -126,7 +128,19 @@ const EventsPage = () => {
                           e.location.toLowerCase().includes(searchTerm.toLowerCase());
       const matchType = typeFilter === 'All Events' || e.type === typeFilter;
       const matchStatus = statusFilter === 'All Statuses' || e.status === statusFilter;
-      return matchSearch && matchType && matchStatus;
+      
+      let matchStock = true;
+      if (stockFilter !== 'All') {
+        const inventory = JSON.parse(localStorage.getItem('bloomwise_inventory') || '[]');
+        const hasInsufficient = e.flowers.some(f => {
+          const invItem = inventory.find(i => i.name.toLowerCase() === f.name.toLowerCase());
+          return f.required > (invItem ? invItem.quantity : 0);
+        });
+        if (stockFilter === 'Sufficient Stock') matchStock = !hasInsufficient;
+        if (stockFilter === 'Insufficient Stock') matchStock = hasInsufficient;
+      }
+
+      return matchSearch && matchType && matchStatus && matchStock;
     });
 
     result.sort((a, b) => {
@@ -153,38 +167,13 @@ const EventsPage = () => {
         </button>
       </div>
 
-      <div className="events-controls">
-        <div className="events-control-box">
-          <Search size={18} color="#9aa69d" />
-          <input 
-            type="text" 
-            placeholder="Search by client, type, location..." 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-        
-        <div className="events-control-box" style={{ flex: '0 1 auto' }}>
-          <Filter size={18} color="#5c6661" />
-          <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
-            {EVENT_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
-          </select>
-        </div>
-
-        <div className="events-control-box" style={{ flex: '0 1 auto' }}>
-          <Filter size={18} color="#5c6661" />
-          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-            {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
-          </select>
-        </div>
-
-        <div className="events-control-box" style={{ flex: '0 1 auto' }}>
-          <SortAsc size={18} color="#5c6661" />
-          <select value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-            {SORTS.map(s => <option key={s} value={s}>{s}</option>)}
-          </select>
-        </div>
-      </div>
+      <EventFilters 
+        searchTerm={searchTerm} setSearchTerm={setSearchTerm}
+        typeFilter={typeFilter} setTypeFilter={setTypeFilter}
+        statusFilter={statusFilter} setStatusFilter={setStatusFilter}
+        stockFilter={stockFilter} setStockFilter={setStockFilter}
+        sortOption={sortOption} setSortOption={setSortOption}
+      />
 
       <div className="events-list">
         {filteredAndSortedEvents.map(event => (

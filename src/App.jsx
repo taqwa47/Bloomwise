@@ -1,11 +1,21 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './hooks/useAuth';
+import { AuthProvider, useAuth } from './hooks/useAuth';
 import { CartProvider } from './hooks/useCart';
 import { RoleGuard, ProtectedRoute } from './components/RoleGuard';
+import { Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Diagnosis from './pages/Diagnosis';
+
+const RootRedirect = () => {
+  const { user, loading } = useAuth();
+  if (loading) return null;
+  if (!user) return <Navigate to="/login" replace />;
+  if (user.role === 'owner') return <Navigate to="/dashboard" replace />;
+  if (user.role === 'customer') return <Navigate to="/customer/home" replace />;
+  return <Navigate to="/login" replace />;
+};
 
 // Owner Pages
 import Dashboard from './pages/Dashboard';
@@ -20,6 +30,7 @@ import FlowerEdit from './pages/FlowerEdit';
 import FlowerDetails from './pages/FlowerDetails';
 import DiagnosisPage from './pages/DiagnosisPage';
 import DiagnosisResult from './pages/DiagnosisResult';
+import SmartPlantCare from './pages/SmartPlantCare';
 import AnalyticsPage from './pages/AnalyticsPage';
 import SuppliersPage from './pages/SuppliersPage';
 import SupplierDetails from './pages/SupplierDetails';
@@ -66,8 +77,9 @@ function App() {
           <Route path="/owner/flowers/add" element={<RoleGuard allowedRoles={['owner']}><OwnerLayout><FlowerAdd /></OwnerLayout></RoleGuard>} />
           <Route path="/owner/flowers/:flowerId/edit" element={<RoleGuard allowedRoles={['owner']}><OwnerLayout><FlowerEdit /></OwnerLayout></RoleGuard>} />
           <Route path="/owner/flowers/:flowerId" element={<RoleGuard allowedRoles={['owner']}><OwnerLayout><FlowerDetails /></OwnerLayout></RoleGuard>} />
-          <Route path="/owner/ai-diagnosis" element={<RoleGuard allowedRoles={['owner']}><OwnerLayout><DiagnosisPage /></OwnerLayout></RoleGuard>} />
-          <Route path="/owner/ai-diagnosis/:diagnosisId" element={<RoleGuard allowedRoles={['owner']}><OwnerLayout><DiagnosisResult /></OwnerLayout></RoleGuard>} />
+          <Route path="/owner/diagnosis" element={<RoleGuard allowedRoles={['owner']}><OwnerLayout><DiagnosisPage /></OwnerLayout></RoleGuard>} />
+          <Route path="/owner/diagnosis/result" element={<RoleGuard allowedRoles={['owner']}><OwnerLayout><DiagnosisResult /></OwnerLayout></RoleGuard>} />
+          <Route path="/owner/smart-plant-care" element={<RoleGuard allowedRoles={['owner']}><OwnerLayout><SmartPlantCare /></OwnerLayout></RoleGuard>} />
           <Route path="/owner/analytics" element={<RoleGuard allowedRoles={['owner']}><OwnerLayout><AnalyticsPage /></OwnerLayout></RoleGuard>} />
           <Route path="/owner/suppliers" element={<RoleGuard allowedRoles={['owner']}><OwnerLayout><SuppliersPage /></OwnerLayout></RoleGuard>} />
           <Route path="/owner/suppliers/:supplierId" element={<RoleGuard allowedRoles={['owner']}><OwnerLayout><SupplierDetails /></OwnerLayout></RoleGuard>} />

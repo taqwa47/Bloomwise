@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { Leaf } from 'lucide-react';
 import '../App.css'; // Reuse base styles
@@ -8,8 +8,18 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      if (user.role === 'owner') {
+        navigate('/dashboard', { replace: true });
+      } else if (user.role === 'customer') {
+        navigate('/customer/home', { replace: true });
+      }
+    }
+  }, [user, navigate]);
 
   const handleLogin = (e) => {
     e.preventDefault();

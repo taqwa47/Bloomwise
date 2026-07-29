@@ -5,49 +5,26 @@ import StatusBadge from '../components/inventory/StatusBadge'
 import QuantityControl from '../components/inventory/QuantityControl'
 import ConfirmDialog from '../components/inventory/ConfirmDialog'
 import '../styles/Inventory.css'
-
-const initialMockInventory = [
-  { id: "inv_1", name: "Red Rose", category: "Rose", quantity: 25, minStock: 10, cost: 2.50, sellingPrice: 4.99, supplier: "Local Farms", color: "Red", storageLocation: "Cooler A", lastUpdated: "Today 9:14 AM", notes: "" },
-  { id: "inv_2", name: "White Lily", category: "Lily", quantity: 3, minStock: 5, cost: 3.00, sellingPrice: 6.50, supplier: "Global Blooms", color: "White", storageLocation: "Cooler B", lastUpdated: "Yesterday", notes: "" },
-  { id: "inv_3", name: "Yellow Tulip", category: "Tulip", quantity: 40, minStock: 15, cost: 1.80, sellingPrice: 3.75, supplier: "Dutch Imports", color: "Yellow", storageLocation: "Display 1", lastUpdated: "Today 11:02 AM", notes: "" },
-  { id: "inv_4", name: "Sunflower", category: "Sunflower", quantity: 0, minStock: 10, cost: 2.20, sellingPrice: 5.25, supplier: "Sunny Farms", color: "Yellow", storageLocation: "Display 2", lastUpdated: "2 days ago", notes: "" },
-  { id: "inv_5", name: "Orchid", category: "Orchid", quantity: 8, minStock: 5, cost: 12.00, sellingPrice: 25.00, supplier: "Exotic Plants", color: "Purple", storageLocation: "Greenhouse", lastUpdated: "Today 8:00 AM", notes: "" },
-  { id: "inv_6", name: "Baby's Breath", category: "Filler", quantity: 50, minStock: 20, cost: 0.50, sellingPrice: 1.50, supplier: "Local Farms", color: "White", storageLocation: "Cooler A", lastUpdated: "Yesterday", notes: "" }
-]
+import { useLocation } from 'react-router-dom'
+import { useInventory } from '../hooks/useInventory'
+// Mock inventory moved to useInventory hook
 
 const InventoryPage = () => {
   const navigate = useNavigate()
-  const [items, setItems] = useState([])
+  const location = useLocation()
+  const { inventory: items, saveInventory: saveItems, updateQuantity: handleUpdateQuantity } = useInventory()
   const [searchQuery, setSearchQuery] = useState('')
   const [itemToDelete, setItemToDelete] = useState(null)
+  
+  // Custom filter state (e.g. 'all', 'alerts')
+  const [activeFilter, setActiveFilter] = useState('all')
 
   useEffect(() => {
-    const stored = localStorage.getItem('bloomwise_inventory')
-    if (stored) {
-      setItems(JSON.parse(stored))
-    } else {
-      setItems(initialMockInventory)
-      localStorage.setItem('bloomwise_inventory', JSON.stringify(initialMockInventory))
+    const params = new URLSearchParams(location.search);
+    if (params.get('filter') === 'alerts') {
+      setActiveFilter('alerts');
     }
-  }, [])
-
-  const saveItems = (newItems) => {
-    setItems(newItems)
-    localStorage.setItem('bloomwise_inventory', JSON.stringify(newItems))
-  }
-
-  const handleUpdateQuantity = (id, delta) => {
-    const newItems = items.map(item => {
-      if (item.id === id) {
-        const newQuantity = Math.max(0, item.quantity + delta)
-        const now = new Date()
-        const timeStr = `Today ${now.getHours() % 12 || 12}:${String(now.getMinutes()).padStart(2, '0')} ${now.getHours() >= 12 ? 'PM' : 'AM'}`
-        return { ...item, quantity: newQuantity, lastUpdated: timeStr }
-      }
-      return item
-    })
-    saveItems(newItems)
-  }
+  }, [location]);
 
   const handleDeleteConfirm = () => {
     if (itemToDelete) {
@@ -65,6 +42,9 @@ const InventoryPage = () => {
 
   // Filter items
   const filteredItems = items.filter(item => {
+    if (activeFilter === 'alerts' && item.quantity > item.minStock) {
+      return false; // Skip healthy stock when alerts filter is active
+    }
     const query = searchQuery.toLowerCase()
     const matchesSearch = 
       item.name.toLowerCase().includes(query) ||
@@ -107,8 +87,20 @@ const InventoryPage = () => {
 
       <div className="inventory-card">
         <div className="inventory-card-header">
-          <h1 className="inventory-card-title">All Inventory</h1>
+          <h1 className="inventory-card-title">{activeFilter === 'alerts' ? 'Stock Alerts' : 'All Inventory'}</h1>
           <div className="inventory-actions">
+            {activeFilter === 'alerts' && (
+              <button 
+                className="clear-search-btn" 
+                onClick={() => {
+                  setActiveFilter('all');
+                  navigate('/owner/inventory');
+                }}
+                style={{ padding: '8px 16px', background: '#e2e8e4', borderRadius: '8px', color: '#1a2f24', border: 'none', cursor: 'pointer', fontWeight: 600, marginRight: '12px' }}
+              >
+                Clear Filter
+              </button>
+            )}
             <div className="inventory-search-wrapper">
               <Search size={16} className="search-icon" />
               <input 
